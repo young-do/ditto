@@ -3,3 +3,4 @@ rules:
   - base: main
     upstream: Nexters:main
     mergeMethod: merge
+    mergeUnstable: true
