@@ -13,8 +13,8 @@ env:
 
 # This runs every 5 min UTC
 on:
-  schedule:
-    - cron: '0 0 * * *'
+#   schedule:
+#     - cron: '0 0 * * *'
   # Allows manual workflow run (must in default branch to work)
   workflow_dispatch:
 
