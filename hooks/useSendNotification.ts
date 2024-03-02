@@ -12,7 +12,7 @@ export type SendNotificationBody = {
 export const useSendNotification = () => {
   return useMutation(
     async (body: SendNotificationBody) => {
-      const res = await fetch('/api/fcm/send-message-v1', {
+      const res = await fetch('/api/fcm/send-message-legacy', {
         method: 'post',
         body: JSON.stringify(body),
       });
