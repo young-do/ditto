@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { BucketFolder } from '@/lib/supabase/type';
+import { BucketFolder as TBucketFolder } from '@/lib/supabase/type';
 import styled from '@emotion/styled';
 import { Text, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
@@ -8,7 +8,7 @@ import theme from '@/styles/theme';
 import { useUnreadBucketItems } from '@/hooks/bucketlist/useUnreadBucketItems';
 import { Badge } from '../common/badge';
 
-const BucketFolderItem = ({ folder }: { folder: BucketFolder }) => {
+const BucketFolderItem = ({ folder }: { folder: TBucketFolder }) => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: unreadBucketItems = [] } = useUnreadBucketItems();
