@@ -13,10 +13,10 @@
     "icon": "npx @svgr/cli --out-dir components/icons --typescript --ignore-existing public/assets"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.4.9",
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@sentry/nextjs": "^7.56.0",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@sentry/nextjs": "^7.112.2",
     "@supabase/supabase-js": "^2.4.1",
     "@tanstack/react-query": "^4.24.4",
     "@tanstack/react-query-devtools": "^4.24.10",
@@ -26,8 +26,6 @@
     "@vercel/analytics": "^0.1.11",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",
-    "eslint": "^8.32.0",
-    "eslint-config-next": "^14.2.3",
     "firebase": "^9.21.0",
     "framer-motion": "^8.5.2",
     "ical-generator": "^4.0.0",
@@ -39,17 +37,19 @@
     "query-string": "^8.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "typescript": "4.9.4",
+    "typescript": "5.4.5",
     "usehooks-ts": "^2.9.1",
     "zod": "^3.20.2",
     "zustand": "^4.3.2"
   },
   "devDependencies": {
     "@chakra-ui/cli": "^2.3.0",
-    "@next/eslint-plugin-next": "^13.1.2",
+    "@next/eslint-plugin-next": "^14.2.3",
     "@svgr/webpack": "^6.5.1",
-    "@typescript-eslint/eslint-plugin": "^5.51.0",
-    "@typescript-eslint/parser": "^5.51.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "eslint": "8.57.0",
+    "eslint-config-next": "^14.2.3",
     "eslint-config-prettier": "^8.6.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
@@ -61,10 +61,5 @@
       "prettier --write",
       "bash -c tsc --noEmit"
     ]
-  },
-  "dependenciesMeta": {
-    "eslint@8.31.0": {
-      "unplugged": true
-    }
   }
 }
