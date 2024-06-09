@@ -1,10 +1,11 @@
 'use client';
 
-import { saveToken } from '@/lib/supabase/apis/fcm';
 import { useUser } from '@/store/useUser';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, Messaging, onMessage, isSupported } from 'firebase/messaging';
 import { useEffect, useState } from 'react';
+import { saveToken } from '@/lib/supabase/client-apis/fcm';
+import { useSupabaseClient } from '@/store/useSupabaseClient';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBkzqkw7zYgtHsbe9ESBdn_WZrxJG4jfLo',
@@ -20,6 +21,7 @@ const firebaseConfig = {
  */
 export const useFirebaseMessaging = () => {
   const { user } = useUser();
+  const { supabaseClient } = useSupabaseClient();
   const [messaging, setMessaging] = useState<Messaging>();
 
   // @note: 로그인 되어있을 때부터 firebase 초기화를 진행한다.
@@ -61,13 +63,13 @@ export const useFirebaseMessaging = () => {
 
         // Send the token to your server and update the UI if necessary
         // ...
-        return saveToken(user.id, token);
+        return saveToken(supabaseClient)(user.id, token);
       })
       .catch((error) => {
         // @todo: 알림을 받을 수 없다는 식의 내용을 UI로 표현할 것
         console.log('An error occurred while retrieving token. ', error);
       });
-  }, [messaging, user]);
+  }, [messaging, supabaseClient, user]);
 
   // @note: foreground일 때 알림이 오면 notification 표시하도록 한다.
   useEffect(() => {

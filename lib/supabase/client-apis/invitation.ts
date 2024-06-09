@@ -1,10 +1,10 @@
 import { INVITATION_CODE_LENGTH } from '@/utils/const';
 import { addDays } from '@/utils/date';
 import { nanoid } from 'nanoid';
-import { supabase } from '../client';
+import { SupabaseClient } from '../client';
 import { InvitationInfo } from '../type';
 
-export const createInvitation = async (creator_id: number, group_id: number) => {
+export const createInvitation = (supabase: SupabaseClient) => async (creator_id: number, group_id: number) => {
   const code = nanoid(INVITATION_CODE_LENGTH);
   const { data, error } = await supabase.from('invitations').insert({ code, creator_id, group_id }).select();
   const invitation = data?.[0];
@@ -13,7 +13,7 @@ export const createInvitation = async (creator_id: number, group_id: number) => 
   return invitation as InvitationInfo;
 };
 
-export const getInvitationsByUserId = async (creator_id: number, group_id: number) => {
+export const getInvitationsByUserId = (supabase: SupabaseClient) => async (creator_id: number, group_id: number) => {
   const minCreatedTime = addDays(new Date(), -1);
   const { data, error } = await supabase
     .from('invitations')

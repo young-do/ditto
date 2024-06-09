@@ -1,7 +1,7 @@
 'use client';
 
 import MainLayout from '@/components/layouts/MainLayout';
-import { joinGroup } from '@/lib/supabase/apis/group';
+import { joinGroup } from '@/lib/supabase/client-apis/group';
 import { useUser } from '@/store/useUser';
 import { KAKAO_LOGIN_URL } from '@/utils/const';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -13,6 +13,7 @@ import { useFetchInvitationInfo } from '@/hooks/invitation/useFetchInvitationInf
 import { useFetchJoinedGroupList } from '@/hooks/group/useFetchJoinedGroupList';
 import { Heading } from '@chakra-ui/react';
 import theme from '@/styles/theme';
+import { useSupabaseClient } from '@/store/useSupabaseClient';
 
 // @note: root page flow
 // 1-1. 로그인 여부 확인 -> 로그인되어 있다면 참여한 그룹 리스트 확인
@@ -33,6 +34,7 @@ const RootPage = () => {
   const { user, isLoading: isLoadingUser, selectedGroupId, setGroupId, login } = useUser();
   const { data: invitationInfo, isLoading: isLoadingInvitationInfo } = useFetchInvitationInfo(code);
   const { data: joinedGroupList = [], isLoading: isLoadingJoinedGroupList } = useFetchJoinedGroupList(user);
+  const { supabaseClient } = useSupabaseClient();
 
   useEffect(() => {
     // @note:
@@ -51,7 +53,7 @@ const RootPage = () => {
       if (invitationInfo) {
         const needToJoin = joinedGroupList.every((group) => group.id !== invitationInfo.group_id);
         if (needToJoin) {
-          await joinGroup(user.id, invitationInfo.group_id, invitationInfo.creator_id);
+          await joinGroup(supabaseClient)(user.id, invitationInfo.group_id, invitationInfo.creator_id);
         }
         setGroupId(invitationInfo.group_id);
         return router.replace('/bucketlist');
@@ -77,6 +79,7 @@ const RootPage = () => {
     setGroupId,
     selectedGroupId,
     router,
+    supabaseClient,
   ]);
 
   return (

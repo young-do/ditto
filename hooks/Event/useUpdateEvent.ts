@@ -1,14 +1,16 @@
-import { updateEvent } from '@/lib/supabase/apis/event';
 import { useQueryClient, useMutation, UseMutationOptions } from '@tanstack/react-query';
-import { UpdateEventType } from '@/lib/supabase/apis/event/type';
+import { UpdateEventType } from '@/lib/supabase/client-apis/event/type';
 import { EVENT_KEY } from '@/utils/const';
 import useCustomToast from '../shared/useCustomToast';
+import { useSupabaseClient } from '@/store/useSupabaseClient';
+import { updateEvent } from '@/lib/supabase/client-apis/event';
 
 export const useUpdateEvent = (options?: Omit<UseMutationOptions<void, Error, UpdateEventType>, 'mutationFn'>) => {
   const queryClient = useQueryClient();
+  const { supabaseClient } = useSupabaseClient();
   const { openToast } = useCustomToast();
 
-  return useMutation(async (params: UpdateEventType) => await updateEvent(params), {
+  return useMutation(async (params: UpdateEventType) => await updateEvent(supabaseClient)(params), {
     ...options,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: EVENT_KEY.lists() });

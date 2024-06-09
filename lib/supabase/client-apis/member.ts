@@ -1,8 +1,8 @@
 import { isNonNullable, pickFirst } from '@/utils/array';
-import { supabase } from '../client';
+import { SupabaseClient } from '../client';
 import { User } from '../type';
 
-export const getMemberListByGroupId = async (group_id: number) => {
+export const getMemberListByGroupId = (supabase: SupabaseClient) => async (group_id: number) => {
   const { data, error } = await supabase
     .from('group_members')
     // @note: `users!group_members_user_id_fkey`

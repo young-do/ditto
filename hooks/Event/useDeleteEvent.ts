@@ -1,13 +1,15 @@
-import { deleteEvent } from '@/lib/supabase/apis/event';
 import { EVENT_KEY } from '@/utils/const';
 import { useQueryClient, useMutation, UseMutationOptions } from '@tanstack/react-query';
 import useCustomToast from '../shared/useCustomToast';
+import { useSupabaseClient } from '@/store/useSupabaseClient';
+import { deleteEvent } from '@/lib/supabase/client-apis/event';
 
 export const useDeleteEvent = (options?: Omit<UseMutationOptions<void, Error, number>, 'mutationFn'>) => {
   const queryClient = useQueryClient();
+  const { supabaseClient } = useSupabaseClient();
   const { openToast } = useCustomToast();
 
-  return useMutation(async (eventId: number) => await deleteEvent(eventId), {
+  return useMutation(async (eventId: number) => await deleteEvent(supabaseClient)(eventId), {
     ...options,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: EVENT_KEY.lists() });

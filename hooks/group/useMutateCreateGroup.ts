@@ -1,6 +1,7 @@
-import { createGroup, joinGroup, createDefaultBucketFolder } from '@/lib/supabase/apis/group';
+import { useSupabaseClient } from '@/store/useSupabaseClient';
 import { GROUP_KEY } from '@/utils/const';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createGroup, joinGroup, createDefaultBucketFolder } from '@/lib/supabase/client-apis/group';
 
 export type CreateGroupParams = {
   userId: number;
@@ -9,12 +10,13 @@ export type CreateGroupParams = {
 
 export const useMutateCreateGroup = () => {
   const queryClient = useQueryClient();
+  const { supabaseClient } = useSupabaseClient();
 
   return useMutation(
     async ({ userId, groupName }: CreateGroupParams) => {
-      const group = await createGroup(userId, groupName);
-      await joinGroup(userId, group.id);
-      await createDefaultBucketFolder(userId, group.id);
+      const group = await createGroup(supabaseClient)(userId, groupName);
+      await joinGroup(supabaseClient)(userId, group.id);
+      await createDefaultBucketFolder(supabaseClient)(userId, group.id);
       return group;
     },
     {

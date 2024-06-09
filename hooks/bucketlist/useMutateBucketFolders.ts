@@ -1,18 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { createBucketFolder, deleteBucketFolder, updateBucketFolder } from '@/lib/supabase/apis/bucketlist';
-import { TCreateBucketFolder, TUpdateBucketFolder } from '@/lib/supabase/apis/bucketlist/type';
+import { TCreateBucketFolder, TUpdateBucketFolder } from '@/lib/supabase/client-apis/bucketlist/type';
 import { useUser } from '@/store/useUser';
 import { BUCKET_FOLDER_KEY } from '@/utils/const';
 import useCustomToast from '@/hooks/shared/useCustomToast';
+import { createBucketFolder, deleteBucketFolder, updateBucketFolder } from '@/lib/supabase/client-apis/bucketlist';
+import { useSupabaseClient } from '@/store/useSupabaseClient';
 
 export const useMutateBucketFolders = () => {
   const queryClient = useQueryClient();
   const { selectedGroupId, user } = useUser();
+  const { supabaseClient } = useSupabaseClient();
   const { openToast } = useCustomToast();
 
   const createBucketFolderMutation = useMutation(
     async (folder: TCreateBucketFolder) => {
-      await createBucketFolder({ user, selectedGroupId, folder });
+      await createBucketFolder(supabaseClient)({ user, selectedGroupId, folder });
     },
     {
       onSuccess: () => {
@@ -27,7 +30,7 @@ export const useMutateBucketFolders = () => {
   );
   const updateBucketFolderMutation = useMutation(
     async (folder: TUpdateBucketFolder) => {
-      await updateBucketFolder(folder);
+      await updateBucketFolder(supabaseClient)(folder);
     },
     {
       onSuccess: () => {
@@ -42,7 +45,7 @@ export const useMutateBucketFolders = () => {
   );
   const deleteBucketFolderMutation = useMutation(
     async (id: number) => {
-      await deleteBucketFolder(id);
+      await deleteBucketFolder(supabaseClient)(id);
     },
     {
       onSuccess: () => {
@@ -55,5 +58,6 @@ export const useMutateBucketFolders = () => {
       },
     }
   );
+
   return { deleteBucketFolderMutation, createBucketFolderMutation, updateBucketFolderMutation };
 };

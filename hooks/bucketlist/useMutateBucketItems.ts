@@ -1,24 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 
 import { useUser } from '@/store/useUser';
-import { TCreateBucketItem, TUpdateBucketItem } from '@/lib/supabase/apis/bucketlist/type';
-import {
-  completeBucketItem,
-  createBucketItem,
-  deleteBucketItem,
-  updateBucketItem,
-} from '@/lib/supabase/apis/bucketlist';
+import { TCreateBucketItem, TUpdateBucketItem } from '@/lib/supabase/client-apis/bucketlist/type';
 import { BUCKET_ITEM_KEY } from '@/utils/const';
 import useCustomToast from '@/hooks/shared/useCustomToast';
+import { useSupabaseClient } from '@/store/useSupabaseClient';
+import {
+  createBucketItem,
+  updateBucketItem,
+  deleteBucketItem,
+  completeBucketItem,
+} from '@/lib/supabase/client-apis/bucketlist';
 
 export const useMutateBucketItems = () => {
   const queryClient = useQueryClient();
   const { selectedGroupId, user } = useUser();
+  const { supabaseClient } = useSupabaseClient();
   const { openToast } = useCustomToast();
 
   const createBucketItemMutation = useMutation(
     async (item: TCreateBucketItem) => {
-      await createBucketItem({ user, selectedGroupId, item });
+      await createBucketItem(supabaseClient)({ user, selectedGroupId, item });
     },
     {
       onSuccess: () => {
@@ -32,7 +35,7 @@ export const useMutateBucketItems = () => {
 
   const updateBucketItemMutation = useMutation(
     async (item: TUpdateBucketItem) => {
-      await updateBucketItem(item);
+      await updateBucketItem(supabaseClient)(item);
     },
     {
       onSuccess: () => {
@@ -48,7 +51,7 @@ export const useMutateBucketItems = () => {
 
   const deleteBucketItemMutation = useMutation(
     async (id: number) => {
-      await deleteBucketItem(id);
+      await deleteBucketItem(supabaseClient)(id);
     },
     {
       onSuccess: () => {
@@ -64,7 +67,7 @@ export const useMutateBucketItems = () => {
 
   const completeBucketItemMutation = useMutation(
     async ({ id, completed }: { id: number; completed: boolean }) => {
-      await completeBucketItem({ id, completed });
+      await completeBucketItem(supabaseClient)({ id, completed });
     },
     {
       onSuccess: () => {

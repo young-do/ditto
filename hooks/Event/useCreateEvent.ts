@@ -1,15 +1,18 @@
-import { createEvent } from '@/lib/supabase/apis/event';
-import { CreateEventType } from '@/lib/supabase/apis/event/type';
+import { CreateEventType } from '@/lib/supabase/client-apis/event/type';
 import { EVENT_KEY } from '@/utils/const';
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import useCustomToast from '../shared/useCustomToast';
+import { useSupabaseClient } from '@/store/useSupabaseClient';
+import { createEvent } from '@/lib/supabase/client-apis/event';
 
 export const useCreateEvent = (options?: UseQueryOptions<void, Error>) => {
   const queryClient = useQueryClient();
+  const { supabaseClient } = useSupabaseClient();
   const { openToast } = useCustomToast();
+
   return useMutation(
     async (params: CreateEventType) => {
-      await createEvent(params);
+      await createEvent(supabaseClient)(params);
     },
     {
       onSuccess: (data) => {

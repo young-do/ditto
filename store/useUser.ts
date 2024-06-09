@@ -1,10 +1,11 @@
-import { getJoinedGroupList } from '@/lib/supabase/apis/group';
-import { updateAllowedAlarm } from '@/lib/supabase/apis/user';
-import { supabase } from '@/lib/supabase/client';
+import { getJoinedGroupList } from '@/lib/supabase/client-apis/group';
+import { updateAllowedAlarm } from '@/lib/supabase/client-apis/user';
+
 import { Group, User } from '@/lib/supabase/type';
 import { createCredentials } from '@/utils/auth';
 import { LOCAL_STORAGE__GROUP_ID } from '@/utils/const';
 import { create } from 'zustand';
+import { useSupabaseClient } from './useSupabaseClient';
 
 type UserState = {
   user: User | null;
@@ -26,12 +27,15 @@ export const useUser = create<UserState>((set, get) => ({
       const res = await fetch('/api/auth/me');
       const user: User | null = (await res.json())?.data?.user;
       if (!user) throw 'empty user info';
+
+      // @note: store에 있는 단일 supabaseClient를 사용합니다.
+      const supabase = useSupabaseClient.getState().supabaseClient;
       // @note: authorized 유저만 supabase를 직접 호출할 때 원하는 데이터를 얻을 수 있음.
       const { error } = await supabase.auth.signInWithPassword(createCredentials(user.id, user.oauth_id));
       if (error) throw error;
 
       // @note: 속한 그룹 중 하나를 선택한다. 최근에 방문한 그룹 정보가 있다면 그걸 선택한다.
-      const groupList = await getJoinedGroupList(user.id);
+      const groupList = await getJoinedGroupList(supabase)(user.id);
       const latestGroupId = Number(localStorage.getItem(LOCAL_STORAGE__GROUP_ID));
       const selectedGroup: Group | undefined = groupList.find((g) => g.id === latestGroupId) ?? groupList[0];
 
@@ -45,6 +49,8 @@ export const useUser = create<UserState>((set, get) => ({
   logout: async () => {
     // @note: 카카오 로그아웃 url 방문없이, 세션에 담긴 쿠키를 제거합니다.
     await fetch('/api/auth/kakao-logout');
+
+    const supabase = useSupabaseClient.getState().supabaseClient;
     // @note: supabase에서도 로그아웃 처리합니다.
     await supabase.auth.signOut();
 
@@ -57,7 +63,8 @@ export const useUser = create<UserState>((set, get) => ({
     const userId = get().user?.id;
     if (!userId) throw 'no user id';
 
-    const user = await updateAllowedAlarm(userId, allowed);
+    const supabase = useSupabaseClient.getState().supabaseClient;
+    const user = await updateAllowedAlarm(supabase)(userId, allowed);
     set({ user });
   },
 }));
