@@ -7,7 +7,7 @@ import { useUser } from '@/store/useUser';
 import useCustomToast from '@/hooks/shared/useCustomToast';
 import { useMutateCreateGroup } from '@/hooks/group/useMutateCreateGroup';
 import theme from '@/styles/theme';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { MAX_LENGTH__GROUP_NAME } from '@/utils/const';
 
 interface CreateGroupModalProps {

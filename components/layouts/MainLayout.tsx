@@ -33,7 +33,7 @@ const MainLayout = ({
 const MainContainer = styled.main`
   position: relative;
   max-width: 480px;
-  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: 100svh;
   margin: 0 auto;
   background-color: ${theme.colors.white};
 `;

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import ArrowRightIcon from '../icons/ArrowRightIcon';
 
 export const SIMPLE_HEADER_HEIGHT = 42;

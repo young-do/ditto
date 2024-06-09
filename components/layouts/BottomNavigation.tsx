@@ -1,16 +1,16 @@
 import theme from '@/styles/theme';
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 export const BOTTOM_NAV_HEIGHT = 60;
 
 const BottomNavigation = () => {
-  const router = useRouter();
+  const pathname = usePathname();
 
   const createLinkProps = (href: string) => ({
     href,
-    selected: router.asPath.startsWith(href),
+    selected: pathname.startsWith(href),
   });
 
   return (

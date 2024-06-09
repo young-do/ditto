@@ -1,3 +1,5 @@
+'use client';
+
 import { saveToken } from '@/lib/supabase/apis/fcm';
 import { useUser } from '@/store/useUser';
 import { initializeApp } from 'firebase/app';

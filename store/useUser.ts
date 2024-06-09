@@ -10,7 +10,7 @@ type UserState = {
   user: User | null;
   isLoading: boolean;
   selectedGroupId: number | null;
-  login: () => Promise<void>;
+  login: () => Promise<User>;
   logout: () => Promise<void>;
   setGroupId: (groupId: number) => void;
   setAllowedAlarm: (allowed: boolean) => Promise<void>;
@@ -36,6 +36,7 @@ export const useUser = create<UserState>((set, get) => ({
       const selectedGroup: Group | undefined = groupList.find((g) => g.id === latestGroupId) ?? groupList[0];
 
       set({ user, isLoading: false, selectedGroupId: selectedGroup?.id ?? null });
+      return user;
     } catch (error) {
       set({ isLoading: false });
       throw error;

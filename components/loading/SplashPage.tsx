@@ -1,3 +1,5 @@
+'use client';
+
 import theme from '@/styles/theme';
 import styled from '@emotion/styled';
 import { SplashLogoIcon, SplashLogoTextIcon } from '../icons';
