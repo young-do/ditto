@@ -1,5 +1,4 @@
-import { EdgeFunction } from '@/lib/edge/types';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 export const config = {
@@ -19,7 +18,7 @@ const bodyScheme = z.object({
   notification_click_action: z.string(),
 });
 
-const edgeFunction: EdgeFunction = async (req) => {
+export const POST = async (req: NextRequest) => {
   try {
     // NOTE: fcm 메시지 전송 테스트용 api. 로컬 개발 시에만 허용함
     if (process.env.NODE_ENV !== 'development') throw 'only works in dev env';
@@ -92,5 +91,3 @@ const edgeFunction: EdgeFunction = async (req) => {
     return res;
   }
 };
-
-export default edgeFunction;
