@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 
 export const useProtectedRoute = (redirectUrl = '/') => {
   const router = useRouter();
-  const { login } = useUser();
-  const [isLoading, setIsLoading] = useState(true);
+  const { login, user } = useUser();
+  const [isLoading, setIsLoading] = useState(() => (user ? false : true));
 
   // @note:
   // 로그인 전에 로딩 페이지를 보여주는 이유는
@@ -29,7 +29,7 @@ export const useProtectedRoute = (redirectUrl = '/') => {
       }
     };
 
-    run();
+    if (!user) run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
