@@ -9,11 +9,14 @@ export const useFetchBucketFolders = () => {
   const { selectedGroupId } = useUser();
   const { supabaseClient } = useSupabaseClient();
 
-  if (!selectedGroupId) throw new Error('selectedGroupId is null');
-
   const fetcher = async () => {
+    if (!selectedGroupId) throw new Error('selectedGroupId is null');
+
     const response = await getBucketFolders(supabaseClient)(selectedGroupId);
     return response;
   };
-  return useQuery<BucketFolder[], Error>(BUCKET_FOLDER_KEY.list([selectedGroupId]), fetcher);
+
+  return useQuery<BucketFolder[], Error>(BUCKET_FOLDER_KEY.list([selectedGroupId]), fetcher, {
+    enabled: !!selectedGroupId,
+  });
 };
