@@ -1,5 +1,7 @@
 import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
 import { GoogleAnalytics } from '@/components/ga/GoogleAnalytics';
+import { SplashPage } from '@/components/loading/SplashPage';
+import { Suspense } from 'react';
 
 import { Providers } from './_providers';
 
@@ -33,7 +35,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
       <GoogleAnalytics />
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Suspense fallback={<SplashPage />}>{children}</Suspense>
+        </Providers>
         <VercelAnalytics />
       </body>
     </html>
