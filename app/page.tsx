@@ -37,10 +37,7 @@ const RootPage = () => {
   const { supabaseClient } = useSupabaseClient();
 
   useEffect(() => {
-    // @note:
-    // getServerSideProps에서 edge function을 호출해도 그 응답에 접근할 수 없기에
-    // 로그인 여부를 client side에서 최초 mount된 시점에 체크합니다.
-    // https://nextjs.org/docs/api-routes/edge-api-routes#differences-between-api-routes
+    // @note: 자동 로그인
     login().catch(() => null);
   }, [login]);
 
@@ -85,7 +82,7 @@ const RootPage = () => {
   return (
     <MainLayout hideBottomNavigation>
       <Container>
-        <WelcomeMessage fontSize={'36px'} lineHeight={'1.5'}>
+        <WelcomeMessage>
           {invitationInfo ? (
             <>
               <b>{invitationInfo?.users.nickname}</b>님이
@@ -128,6 +125,8 @@ const Container = styled.section`
 const WelcomeMessage = styled(Heading)`
   padding: 56px 28px 0;
   font-weight: 400;
+  font-size: 36px;
+  line-height: 1.5;
   letter-spacing: -0.02em;
   white-space: pre-line;
   text-align: left;
