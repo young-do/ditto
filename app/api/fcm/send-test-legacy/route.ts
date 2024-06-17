@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-export const config = {
-  runtime: 'edge',
-};
-
 const bodyScheme = z.object({
   /** push 메시지 보낼 target fcm token */
   fcm_token: z.string(),

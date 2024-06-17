@@ -2,8 +2,6 @@ import { issueAccessToken } from '@/lib/auth/kakao';
 import { COOKIE_KAKAO_ACCESS_TOKEN_NAME, COOKIE_KAKAO_REFRESH_TOKEN_NAME, HOSTING_URL } from '@/utils/const';
 import { NextRequest, NextResponse } from 'next/server';
 
-// export const runtime = 'edge';
-
 const withState = (url: string, state?: string | null) => (state ? `${url}/?state=${state}` : url);
 
 export const GET = async (req: NextRequest) => {

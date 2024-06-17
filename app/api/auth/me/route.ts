@@ -4,8 +4,6 @@ import { COOKIE_KAKAO_REFRESH_TOKEN_NAME, COOKIE_KAKAO_ACCESS_TOKEN_NAME } from 
 import { createOauthId } from '@/utils/auth';
 import { adminApi } from '@/lib/supabase/admin';
 
-// export const runtime = 'edge';
-
 export const GET = async (req: NextRequest) => {
   try {
     const refreshToken = req.cookies.get(COOKIE_KAKAO_REFRESH_TOKEN_NAME)?.value;
