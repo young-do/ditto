@@ -13,7 +13,7 @@ export const useProtectedRoute = (redirectUrl = '/') => {
   useEffect(() => {
     const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
     const run = async () => {
-      const result = await Promise.race([
+      const [user] = await Promise.all([
         // 로그인이 실패해도 다음 로직을 실행하기 위해 catch로 에러를 잡아줍니다.
         login().catch(() => null),
 
@@ -22,7 +22,7 @@ export const useProtectedRoute = (redirectUrl = '/') => {
         wait(1000),
       ]);
 
-      if (!result) {
+      if (!user) {
         router.replace(redirectUrl);
       } else {
         setIsLoading(false);
