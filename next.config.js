@@ -20,6 +20,7 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  output: 'standalone',
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
